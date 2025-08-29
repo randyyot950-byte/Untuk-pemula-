@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulasi Hacker</title>
+  <style>
+    body {
+      background: black;
+      color: lime;
+      font-family: monospace;
+      padding: 20px;
+      white-space: pre-wrap;
+    }
+    #console {
+      border-right: 2px solid lime;
+      display: inline-block;
+      padding-right: 5px;
+      animation: blink 0.7s infinite;
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+    .success {
+      color: red;
+      text-shadow: 0 0 5px red;
+    }
+  </style>
+</head>
+<body>
+  <div id="console"></div>
+
+  <script>
+    const lines = [
+      "Menghubungkan ke server pemerintah...",
+      "Bypassing firewall...",
+      "Meminta akses database...",
+      "Mendapatkan respon...",
+      "Decrypting data [####################] 100%",
+      "",
+      "ACCESS GRANTED ✅",
+      "",
+      "Mengambil data rahasia...",
+      "Nama   : Joko Santoso",
+      "NIK    : 317XXXXXXXXX",
+      "Alamat : Jl. Merdeka No.123, Jakarta",
+      "Status : AKTIF",
+      "",
+      ">> Data berhasil diunduh!"
+    ];
+
+    let i = 0;
+    let j = 0;
+    const consoleDiv = document.getElementById("console");
+
+    function typeLine() {
+      if (i < lines.length) {
+        if (j < lines[i].length) {
+          consoleDiv.textContent += lines[i][j];
+          j++;
+          setTimeout(typeLine, 30);
+        } else {
+          consoleDiv.textContent += "\n";
+          i++;
+          j = 0;
+          setTimeout(typeLine, 200);
+        }
+      }
+    }
+    window.onload = typeLine;
+  </script>
+</body>
+</html>
