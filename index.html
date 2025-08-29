@@ -3,71 +3,160 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simulasi Hacker</title>
+  <title>Fake Hacker Console</title>
   <style>
     body {
       background: black;
       color: lime;
       font-family: monospace;
+      margin: 0;
       padding: 20px;
-      white-space: pre-wrap;
+      overflow: hidden;
     }
     #console {
+      white-space: pre-wrap;
       border-right: 2px solid lime;
       display: inline-block;
       padding-right: 5px;
       animation: blink 0.7s infinite;
     }
-    @keyframes blink {
-      50% { border-color: transparent; }
+    @keyframes blink { 50% { border-color: transparent; } }
+    .controls { margin-top: 15px; }
+    button {
+      background: lime;
+      color: black;
+      font-weight: bold;
+      border: none;
+      padding: 8px 15px;
+      margin: 5px;
+      cursor: pointer;
+      border-radius: 5px;
     }
-    .success {
-      color: red;
-      text-shadow: 0 0 5px red;
-    }
+    button:hover { background: white; }
   </style>
 </head>
 <body>
+  <h2>💻 Simulasi Hacker Console 💻</h2>
   <div id="console"></div>
+  <div class="controls">
+    <button onclick="prevPage()">⟵ Prev</button>
+    <button onclick="nextPage()">Next ⟶</button>
+  </div>
 
   <script>
-    const lines = [
-      "Menghubungkan ke server pemerintah...",
-      "Bypassing firewall...",
-      "Meminta akses database...",
-      "Mendapatkan respon...",
-      "Decrypting data [####################] 100%",
-      "",
-      "ACCESS GRANTED ✅",
-      "",
-      "Mengambil data rahasia...",
-      "Nama   : Joko Santoso",
-      "NIK    : 317XXXXXXXXX",
-      "Alamat : Jl. Merdeka No.123, Jakarta",
-      "Status : AKTIF",
-      "",
-      ">> Data berhasil diunduh!"
+    const pages = [
+      [
+        "== Login Console ==",
+        "Masukkan username: admin",
+        "Masukkan password: ********",
+        "Verifikasi...",
+        "ACCESS GRANTED ✅",
+      ],
+      [
+        "== Dashboard ==",
+        "Welcome back, admin!",
+        "System status: ONLINE",
+        "Active modules: [AUTH] [LOG] [DB] [MSG]",
+      ],
+      [
+        "== Logs ==",
+        "2025-08-29 12:01 LOGIN SUCCESS user=guest",
+        "2025-08-29 12:05 FAILED ATTEMPT user=test",
+        "2025-08-29 12:10 LOGIN SUCCESS user=admin",
+      ],
+      [
+        "== User List ==",
+        "ID: U1001 | Name: Matius   | Role: User",
+        "ID: U1002 | Name: Roni     | Role: User",
+        "ID: U1003 | Name: Gabriel  | Role: Moderator",
+        "ID: U1004 | Name: Kahendra | Role: User",
+        "ID: U1005 | Name: Junior   | Role: Admin",
+        "ID: U1006 | Name: Anggel   | Role: Guest",
+      ],
+      [
+        "== Device Info ==",
+        "Device-01 | IP: 192.168.0.12 | OS: Linux 5.15",
+        "Device-02 | IP: 192.168.0.24 | OS: Windows 10",
+        "Device-03 | IP: 10.0.0.5     | OS: MacOS 12",
+      ],
+      [
+        "== Session Monitor ==",
+        "Session#01 | User: Matius   | Status: ACTIVE",
+        "Session#02 | User: Roni     | Status: IDLE",
+        "Session#03 | User: Gabriel  | Status: ACTIVE",
+        "Session#04 | User: Kahendra | Status: OFFLINE",
+        "Session#05 | User: Junior   | Status: ACTIVE",
+        "Session#06 | User: Anggel   | Status: IDLE",
+      ],
+      [
+        "== Messages ==",
+        "Matius   → Roni     : Halo, login sudah berhasil?",
+        "Gabriel  → Kahendra : Cek data di dashboard ya",
+        "Junior   → Anggel   : Pastikan session tetap aktif",
+      ],
+      [
+        "== Transactions ==",
+        "TX#001 | User: Matius   | Item: File_A | Status: OK",
+        "TX#002 | User: Gabriel  | Item: File_B | Status: OK",
+        "TX#003 | User: Junior   | Item: File_C | Status: FAILED",
+      ],
+      [
+        "== Alerts ==",
+        "⚠ ALERT: User Kahendra mencoba akses tanpa izin",
+        "⚠ ALERT: User Anggel idle terlalu lama",
+        "⚠ ALERT: Sistem butuh verifikasi ulang untuk Roni",
+      ],
+      [
+        "== Summary ==",
+        "Login berhasil ✅",
+        "User terdeteksi: 6 akun",
+        "Session aktif   : 3",
+        "Transaksi OK    : 2",
+        "Status misi     : SELESAI",
+      ]
     ];
 
-    let i = 0;
-    let j = 0;
+    let page = 0;
     const consoleDiv = document.getElementById("console");
 
-    function typeLine() {
+    function showPage() {
+      consoleDiv.textContent = "";
+      typeLine(0, pages[page]);
+    }
+
+    function typeLine(i, lines) {
       if (i < lines.length) {
-        if (j < lines[i].length) {
-          consoleDiv.textContent += lines[i][j];
-          j++;
-          setTimeout(typeLine, 30);
-        } else {
-          consoleDiv.textContent += "\n";
-          i++;
-          j = 0;
-          setTimeout(typeLine, 200);
+        let j = 0;
+        function typeChar() {
+          if (j < lines[i].length) {
+            consoleDiv.textContent += lines[i].charAt(j);
+            j++;
+            setTimeout(typeChar, 30);
+          } else {
+            consoleDiv.textContent += "\\n";
+            typeLine(i + 1, lines);
+          }
         }
+        typeChar();
       }
     }
-    window.onload = typeLine;
+
+    function nextPage() {
+      if (page < pages.length - 1) {
+        page++;
+        showPage();
+      }
+    }
+
+    function prevPage() {
+      if (page > 0) {
+        page--;
+        showPage();
+      }
+    }
+
+    // mulai dari halaman 1
+    showPage();
   </script>
 </body>
 </html>
